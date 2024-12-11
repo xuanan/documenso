@@ -12,6 +12,7 @@ FROM base AS builder
 RUN apk add --no-cache libc6-compat
 RUN apk add --no-cache jq
 RUN apk add --no-cache openssl
+RUN ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3
 WORKDIR /app
 
 COPY . .
@@ -33,6 +34,7 @@ RUN apk add --no-cache jq
 # Required for node_modules/aws-crt
 RUN apk add --no-cache make cmake g++
 RUN apk add --no-cache openssl
+RUN ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3
 WORKDIR /app
 
 # Disable husky from installing hooks
@@ -77,6 +79,7 @@ RUN turbo run build --filter=@documenso/web...
 ###########################
 FROM base AS runner
 RUN apk add --no-cache openssl
+RUN ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3
 WORKDIR /app
 
 # Don't run production as root
