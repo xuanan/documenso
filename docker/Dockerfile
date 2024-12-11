@@ -11,6 +11,7 @@ FROM base AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 RUN apk add --no-cache jq
+RUN apk add --no-cache openssl
 WORKDIR /app
 
 COPY . .
@@ -31,7 +32,7 @@ RUN apk add --no-cache libc6-compat
 RUN apk add --no-cache jq
 # Required for node_modules/aws-crt
 RUN apk add --no-cache make cmake g++
-
+RUN apk add --no-cache openssl
 WORKDIR /app
 
 # Disable husky from installing hooks
@@ -75,7 +76,7 @@ RUN turbo run build --filter=@documenso/web...
 #     RUNNER CONTAINER    #
 ###########################
 FROM base AS runner
-
+RUN apk add --no-cache openssl
 WORKDIR /app
 
 # Don't run production as root
